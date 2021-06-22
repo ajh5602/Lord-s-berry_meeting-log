@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mdm.server.mapper.api.CertMapper">
+
+    <!--기기 있는지 조회 쿼리-->
+    <select id="findDeviceByDeviceAndMac" resultType="DeviceResponse">
+        SELECT ID, DEVICE_NAME, SERIAL, DESCRIPTION, LOCATION, MAC, IP
+        FROM TB_DEVICE
+        WHERE ID = #{id}
+    </select>
+
+    <!--디바이스 체크 쿼리-->
+    <insert id="deviceCheck">
+        INSERT INTO TB_DEVICE_STATUS(
+        DEVICE_ID,
+        STATUS,
+        UPDATED_DT
+        ) VALUES (
+        #{id},
+        '1',
+        NOW()
+        )
+        ON DUPLICATE KEY UPDATE
+        STATUS = '1',
+        UPDATED_DT = NOW()
+    </insert>
+
+    <!--사용자 로그인 쿼리-->
+    <select id="findAdminByIdAndPw" resultType="AdminResponse">
+        SELECT ID, LOGIN_ID, LOGIN_PWD, DESCRIPTION, CREATED_DT
+        FROM TB_OPERATOR
+        WHERE LOGIN_ID = #{loginId}
+    </select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mdm.server.mapper.api.DepartmentMapper">
+    <!--부서 추가 쿼리-->
+    <insert id="addDepartment" parameterType="com.mdm.server.domain.request.DepartmentRequest" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO TB_DEPARTMENT(
+        NAME,
+        PARENT_ID,
+        SYNC_TYPE,
+        SYNC_INDEX,
+        CREATED_DT
+        ) VALUES (
+        #{name},
+        #{parentId},
+        'I',
+        (SELECT SYNC_INDEX FROM ( SELECT IFNULL(MAX(SYNC_INDEX)+1,1) AS SYNC_INDEX FROM TB_DEPARTMENT) A),
+        NOW()
+        )
+    </insert>
+    <!--부모 부서가 있는지 체크하는 쿼리-->
+    <select id="isExistDepartment" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_DEPARTMENT
+        WHERE ID = #{parentId}
+    </select>
+    <!--부서 수정 쿼리-->
+    <update id = "setDepartment" parameterType="com.mdm.server.domain.request.DepartmentRequest">
+        UPDATE TB_DEPARTMENT
+        SET PARENT_ID = #{parentId}, NAME = #{name}
+        WHERE 1=1
+        AND ID = #{id}
+    </update>
+    <!--부서 삭제 쿼리-->
+    <delete id="delDepartment">
+        DELETE
+        FROM TB_DEPARTMENT
+        WHERE 1=1
+        AND ID = #{id}
+    </delete>
+</mapper>

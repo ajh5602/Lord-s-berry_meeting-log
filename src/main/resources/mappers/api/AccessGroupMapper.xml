@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mdm.server.mapper.api.AccessGroupMapper">
+    <!--엑세스 그룹 추가 쿼리-->
+    <insert id="addAccessGroup" parameterType="com.mdm.server.domain.request.DepartmentRequest">
+        INSERT INTO TB_ACCESS_GROUP_LIST(
+        ACCESS_GROUP_ID,
+        DEVICE_ID,
+        SYNC_TYPE,
+        SYNC_INDEX
+        ) VALUES (
+        #{accessGroupId},
+        #{deviceId},
+        'I',
+        (SELECT SYNC_INDEX FROM ( SELECT IFNULL(MAX(SYNC_INDEX)+1,1) AS SYNC_INDEX FROM TB_ACCESS_GROUP_LIST) A)
+        )
+    </insert>
+    <!--출입 그룹 삭제 쿼리-->
+    <delete id="delAccessGroup" parameterType="com.mdm.server.domain.request.AccessGroupRequest">
+        DELETE
+        FROM TB_ACCESS_GROUP_LIST
+        WHERE 1=1
+        AND ACCESS_GROUP_ID = #{accessGroupId}
+        AND DEVICE_ID = #{deviceId}
+    </delete>
+
+    <!-- accessGroup 있는지 체크하는 쿼리-->
+    <select id="isExistAccessGroup" parameterType="com.mdm.server.domain.request.AccessGroupRequest" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_ACCESS_GROUP
+        WHERE ID = #{accessGroupId}
+    </select>
+    <!--해당 디바이스 있는지 체크하는 쿼리-->
+    <select id="isExistDeviceId" parameterType="com.mdm.server.domain.request.AccessGroupRequest" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_DEVICE
+        WHERE ID = #{deviceId}
+    </select>
+</mapper>

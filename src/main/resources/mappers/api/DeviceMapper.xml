@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mdm.server.mapper.api.DeviceMapper">
+    <!--로그 저장-->
+   <insert id="addLog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+       INSERT INTO TB_LOG(
+       DEVICE_ID,
+       USER_ID,
+       CONFIDENCE,
+       TEMPERATURE,
+       CREATED_DT
+       ) VALUES (
+       #{deviceId},
+       #{userId},
+       #{confidence},
+       #{temperature},
+       NOW()
+       )
+   </insert>
+    <!--로그 이미지 저장-->
+    <insert id="addLogImage" >
+        INSERT INTO TB_LOG_IMAGES(
+        LOG_ID,
+        LOG_IMAGE
+        ) VALUES (
+        #{id},
+        #{logImage}
+        )
+    </insert>
+</mapper>

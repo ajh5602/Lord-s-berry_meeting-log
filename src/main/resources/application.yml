@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:log4jdbc:mysql://localhost:3306/soface_server_db?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: soface1q2w3e$R
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+
+server:
+  port: 8990
+
+logging:
+  level:
+    com.bookflex: debug
+
+jwt:
+  header: Authorization
+  secret: sofacecredencialwave
+  token-validity-in-seconds: 3600000
+
+mybatis:
+  mapper-locations: classpath:/mappers/**/*.xml
+  type-aliases-package: com.mdm.server.domain
